@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="全国大学生集成电路创新创业大赛 — 基于FPGA与Cortex-M0的SoC系统设计，DINO & SNAKE游戏。李世豪项目详情。">
+    <meta name="keywords" content="集创赛,FPGA,Cortex-M0,SoC,AHBlite,OLED,VGA,Verilog,Keil,李世豪">
+    <title>集创赛 · DINO & SNAKE | 李世豪</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #f8f9fb;
+            --card-bg: #ffffff;
+            --text: #2d3436;
+            --text-secondary: #636e72;
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --border: #e5e7eb;
+            --tag-bg: #f1f5f9;
+            --tag-text: #475569;
+            --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.03);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body { font-family: var(--font-sans); background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
+
+        /* ===== Top Nav Bar ===== */
+        .top-nav {
+            background: var(--card-bg); border-bottom: 1px solid var(--border);
+            padding: 0 24px; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px);
+        }
+        .top-nav-inner {
+            max-width: 860px; margin: 0 auto; display: flex; align-items: center; height: 48px; gap: 12px;
+        }
+        .top-nav a { color: var(--text-secondary); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .top-nav a:hover { color: var(--accent); }
+        .top-nav .separator { color: var(--border); }
+
+        /* ===== Hero ===== */
+        .hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #1e3a5f 100%);
+            color: #ffffff; padding: 56px 24px 44px; text-align: center; position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at 30% 60%, rgba(37, 99, 235, 0.12) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, rgba(56, 189, 248, 0.08) 0%, transparent 50%);
+            animation: heroGlow 8s ease-in-out infinite alternate;
+        }
+        @keyframes heroGlow {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-2%) scale(1.02); }
+        }
+        .hero-content { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; }
+        .hero-label { font-size: 0.82rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-light); margin-bottom: 12px; }
+        .hero-title { font-size: clamp(1.4rem, 3.5vw, 2rem); font-weight: 700; letter-spacing: 0.04em; margin-bottom: 8px; }
+        .hero-subtitle { font-size: 1rem; font-weight: 400; color: #94a3b8; margin-bottom: 6px; }
+        .hero-meta { font-size: 0.9rem; color: #94a3b8; }
+        .hero-back { display: inline-flex; align-items: center; gap: 6px; color: #94a3b8; text-decoration: none; font-size: 0.85rem; margin-top: 16px; transition: color 0.2s; }
+        .hero-back:hover { color: #ffffff; }
+
+        /* ===== Container ===== */
+        .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 64px; }
+
+        /* ===== Section ===== */
+        .section { margin-bottom: 28px; }
+        .section-title { display: flex; align-items: center; gap: 10px; font-size: 1.25rem; font-weight: 700; color: var(--text); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--accent-light); }
+        .section-title .dot { width: 10px; height: 10px; background: var(--accent); border-radius: 50%; flex-shrink: 0; }
+
+        /* ===== Cards ===== */
+        .card { background: var(--card-bg); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); border: 1px solid var(--border); transition: box-shadow 0.2s, transform 0.2s; }
+        .card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+        .card + .card { margin-top: 16px; }
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+        .card-title { font-size: 1.05rem; font-weight: 700; color: var(--text); }
+        .card-subtitle { font-size: 0.88rem; color: var(--text-secondary); }
+        .card-date { font-size: 0.82rem; color: var(--accent); font-weight: 600; white-space: nowrap; background: var(--accent-light); padding: 3px 10px; border-radius: 20px; }
+        .card-body { color: var(--text-secondary); font-size: 0.93rem; line-height: 1.75; }
+        .card-body ul { list-style: none; padding: 0; }
+        .card-body ul li { position: relative; padding-left: 18px; margin-bottom: 6px; }
+        .card-body ul li::before { content: ''; position: absolute; left: 0; top: 10px; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; opacity: 0.6; }
+        .card-body p { margin-bottom: 10px; }
+
+        /* ===== Info Grid ===== */
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+        .info-item { background: var(--card-bg); border-radius: var(--radius-sm); padding: 16px 18px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+        .info-item .label { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+        .info-item .value { font-size: 0.93rem; font-weight: 700; color: var(--text); }
+
+        /* ===== Module List ===== */
+        .module-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px; }
+        .module-card { background: var(--card-bg); border-radius: var(--radius-sm); padding: 16px 18px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+        .module-card .mod-name { font-family: var(--font-mono, "Consolas", monospace); font-size: 0.85rem; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+        .module-card .mod-desc { font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55; }
+
+        /* ===== Project Image ===== */
+        .project-image { width: 100%; max-width: 100%; border-radius: var(--radius); box-shadow: var(--shadow-md); border: 1px solid var(--border); margin-top: 16px; }
+        .image-caption { text-align: center; font-size: 0.85rem; color: var(--text-secondary); margin-top: 8px; }
+
+        /* ===== Tags ===== */
+        .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+        .tag { display: inline-block; background: var(--tag-bg); color: var(--tag-text); font-size: 0.8rem; padding: 4px 12px; border-radius: 20px; font-weight: 500; letter-spacing: 0.01em; }
+
+        /* ===== Highlight Box ===== */
+        .highlight-box { background: #fef3c7; border: 1px solid #fde68a; border-radius: var(--radius); padding: 20px 24px; display: flex; align-items: flex-start; gap: 12px; }
+        .highlight-box .icon-lg { font-size: 1.5rem; flex-shrink: 0; margin-top: 2px; }
+        .highlight-box .content h3 { font-size: 1rem; font-weight: 700; color: #92400e; margin-bottom: 4px; }
+        .highlight-box .content p { font-size: 0.9rem; color: #a16207; line-height: 1.65; }
+
+        /* ===== HW/SW Split ===== */
+        .hwsw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .hw-card { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: var(--radius-sm); padding: 18px 20px; }
+        .hw-card h3 { font-size: 0.95rem; font-weight: 700; color: #1e40af; margin-bottom: 8px; }
+        .hw-card p { font-size: 0.85rem; color: #1e3a5f; line-height: 1.6; }
+        .sw-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-sm); padding: 18px 20px; }
+        .sw-card h3 { font-size: 0.95rem; font-weight: 700; color: #166534; margin-bottom: 8px; }
+        .sw-card p { font-size: 0.85rem; color: #14532d; line-height: 1.6; }
+
+        /* ===== Footer ===== */
+        .footer { text-align: center; padding: 32px 20px; color: var(--text-secondary); font-size: 0.82rem; border-top: 1px solid var(--border); }
+        .footer a { color: var(--accent); text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        .footer-back { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 16px; color: var(--accent); text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: gap 0.2s; }
+        .footer-back:hover { gap: 10px; }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 640px) {
+            .hero { padding: 40px 16px 32px; }
+            .container { padding: 20px 12px 48px; }
+            .card { padding: 16px; }
+            .info-grid { grid-template-columns: 1fr 1fr; }
+            .top-nav { padding: 0 16px; }
+            .hwsw-grid { grid-template-columns: 1fr; }
+            .module-list { grid-template-columns: 1fr; }
+        }
+
+        @media print {
+            .hero { background: #0f172a !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .card, .info-item, .module-card { box-shadow: none; break-inside: avoid; }
+            body { background: #fff; }
+            .top-nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="top-nav">
+        <div class="top-nav-inner">
+            <a href="../../index.html">← 李世豪</a>
+            <span class="separator">/</span>
+            <span style="font-size:0.88rem;color:var(--text);">集创赛 · DINO & SNAKE</span>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <div class="hero-label">● 项目详情</div>
+            <h1 class="hero-title">全国大学生集成电路创新创业大赛</h1>
+            <p class="hero-subtitle">安谋科技杯 · DINO & SNAKE · 基于 Cortex-M0 的 FPGA SoC</p>
+            <p class="hero-meta">2023.03 – 2023.07 | 项目负责人 | 队伍编号 CICC3379</p>
+            <a href="../../index.html" class="hero-back">← 返回主页</a>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- ===== 项目概述 ===== -->
+        <section class="section">
+            <h2 class="section-title"><span class="dot"></span>项目概述</h2>
+            <div class="card">
+                <div class="card-body">
+                    <p>本项目为<strong>第七届全国大学生集成电路创新创业大赛</strong>（安谋科技杯）参赛作品，作品名称为 <strong>DINO AND SNAKE</strong>。项目基于 <strong>FPGA 与 ARM Cortex-M0 软核</strong>构建了一个完整的 SoC 系统，并在其上实现了两款经典街机风格游戏——小恐龙跳跃（DINO）与贪吃蛇（SNAKE），展示了软硬件协同设计的完整流程。</p>
+                    <p>系统采用 <strong>AHBlite 总线</strong>架构连接 Cortex-M0 处理器与各外设模块，通过<strong>软硬件功能划分</strong>合理分配 FPGA 逻辑资源与处理器算力，实现了 OLED / VGA 双屏显示、矩阵键盘中断控制、蜂鸣器音乐播放等多功能集成。</p>
+                </div>
+            </div>
+
+            <div class="info-grid" style="margin-top: 16px;">
+                <div class="info-item">
+                    <div class="label">参赛赛事</div>
+                    <div class="value">第七届集创赛</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">杯赛</div>
+                    <div class="value">安谋科技杯</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">作品名称</div>
+                    <div class="value">DINO AND SNAKE</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">队伍编号</div>
+                    <div class="value">CICC3379</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">团队</div>
+                    <div class="value">madao</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">角色</div>
+                    <div class="value">项目负责人</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 系统架构 ===== -->
+        <section class="section">
+            <h2 class="section-title"><span class="dot"></span>系统架构</h2>
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">Cortex-M0 SoC 系统设计</div>
+                        <div class="card-subtitle">ARM DesignStart · AHBlite 总线 · 多外设集成</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p>系统以 ARM Cortex-M0 软核（AT510-MN-80001-r2p0-00rel0）为核心，通过 AHBlite 总线互联架构，将以下外设模块集成至统一的 SoC 平台：</p>
+                    <ul>
+                        <li><strong>Block RAM：</strong>存储 Cortex-M0 可识别的指令机器码（hex），映射地址空间 0x00000000 – 0x0000FFFF</li>
+                        <li><strong>OLED 显示屏：</strong>MCU 接口屏，通过总线读写寄存器实现图像显示，用于 DINO 游戏画面</li>
+                        <li><strong>VGA 显示屏：</strong>640×480 分辨率，用于 SNAKE 游戏画面，采用像素合并技术降低总线占用</li>
+                        <li><strong>矩阵键盘：</strong>通过键盘扫描 + 中断生成模块，将按键状态以中断信号形式传给 M0</li>
+                        <li><strong>蜂鸣器：</strong>Verilog 硬件实现的音乐播放器，总线控制歌曲切换与播放/暂停</li>
+                        <li><strong>定时器：</strong>FPGA 端编写的定时器模块，产生周期性中断信号驱动游戏刷新</li>
+                    </ul>
+                </div>
+            </div>
+
+            <img class="project-image" src="images/系统架构图.png" alt="系统设计框图" style="margin-top: 16px;">
+            <p class="image-caption">▲ 系统总体设计框图（将图片放入 images/ 文件夹即可显示）</p>
+        </section>
+
+        <!-- ===== 关键模块设计 ===== -->
+        <section class="section">
+            <h2 class="section-title"><span class="dot"></span>关键模块设计</h2>
+            <div class="module-list">
+                <div class="module-card">
+                    <div class="mod-name">cortexm0ds_logic.v</div>
+                    <div class="mod-desc">从 ARM DesignStart 获取的 Cortex-M0 裸核网表文件，为整个 SoC 的运算与控制核心。</div>
+                </div>
+                <div class="module-card">
+                    <div class="mod-name">AHBlite_Decoder.v</div>
+                    <div class="mod-desc">总线地址译码模块，预留四个从机端口。Port0 分配给指令 BRAM，地址空间 0x00000000–0x0000FFFF。</div>
+                </div>
+                <div class="module-card">
+                    <div class="mod-name">AHBlite_SlaveMUX.v</div>
+                    <div class="mod-desc">从机多路复用选择器，根据译码结果选择对应从机的控制信号与数据通路。</div>
+                </div>
+                <div class="module-card">
+                    <div class="mod-name">AHBlite_Interconnect.v</div>
+                    <div class="mod-desc">总线互联顶层模块，例化 Decoder 与 SlaveMUX，将主机地址/数据/控制总线与各从机对应相连。</div>
+                </div>
+                <div class="module-card">
+                    <div class="mod-name">Block_RAM.v</div>
+                    <div class="mod-desc">指令存储器，预置 Cortex-M0 可执行的 hex 机器码。</div>
+                </div>
+                <div class="module-card">
+                    <div class="mod-name">AHBlite_Block_RAM.v</div>
+                    <div class="mod-desc">BRAM 的 AHBlite 总线接口层，负责总线协议适配与数据读写控制。</div>
+                </div>
+                <div class="module-card">
+                    <div class="mod-name">CortexM0_SoC.v</div>
+                    <div class="mod-desc">SoC 顶层文件，集成 M0 裸核、AHBlite 总线、BRAM 及接口模块，连接时钟/复位/调试接口。</div>
+                </div>
+                <div class="module-card">
+                    <div class="mod-name">keyboard_scan + generate_keyirq</div>
+                    <div class="mod-desc">键盘扫描模块检测按键动作，中断生成模块产生一个 HCLK 周期的高电平脉冲，送入 M0 IRQ 触发中断服务程序。</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 游戏实现 ===== -->
+        <section class="section">
+            <h2 class="section-title"><span class="dot"></span>游戏实现</h2>
+
+            <!-- DINO -->
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">《DINO》小恐龙跳跃</div>
+                        <div class="card-subtitle">OLED 显示 · 定时器中断 · Keil 软件逻辑</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p>DINO 游戏运行在 Keil 编写的软件层，通过总线控制 OLED 显示屏与各外设：</p>
+                    <ul>
+                        <li><strong>显示驱动：</strong>OLED 为 MCU 屏，硬件仅实现电气连接与管脚绑定（FPGA 端），显示驱动函数全部在 M0 固件中通过读写寄存器实现</li>
+                        <li><strong>画面刷新：</strong>定时器每 0.1 秒产生中断使能游戏功能函数，实现 10Hz 刷新率</li>
+                        <li><strong>游戏控制：</strong>拨动开关 SW7 启动游戏，按键 KEY13 控制跳跃，KEY14 实现游戏重开</li>
+                        <li><strong>计分机制：</strong>OLED 右上角实时显示当前分数与最高分，小恐龙移动速度随分数升高递增</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SNAKE -->
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">《SNAKE》贪吃蛇</div>
+                        <div class="card-subtitle">VGA 显示 · 像素合并优化 · 硬件逻辑</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p>SNAKE 游戏主体在 FPGA 硬件端以 Verilog 实现，直接与 VGA 显示驱动结合：</p>
+                    <ul>
+                        <li><strong>VGA 驱动：</strong>640×480 分辨率，为降低总线占用率，采用<strong>像素合并技术</strong>——将 posX/posY 低 4 位合并为一个像素点，一次赋值控制 (2⁴)×(2⁴) = 256 个物理像素，极大减少 M0 总线带宽压力</li>
+                        <li><strong>游戏逻辑：</strong>硬件端实现蛇的移动、食物判定、碰撞检测与死亡条件</li>
+                        <li><strong>控制方式：</strong>按键控制蛇的移动方向；预留手势识别模块接口，可通过总线传输手势信号控制方向（开发中）</li>
+                        <li><strong>得分显示：</strong>触碰死亡后屏幕显示本轮得分</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 软硬件划分 ===== -->
+        <section class="section">
+            <h2 class="section-title"><span class="dot"></span>软硬件功能划分</h2>
+            <div class="hwsw-grid">
+                <div class="hw-card">
+                    <h3>🖥️ 硬件端（FPGA / Verilog）</h3>
+                    <p>
+                        • Cortex-M0 软核与 AHBlite 总线互联<br>
+                        • OLED / VGA 管脚绑定与电气接口<br>
+                        • 矩阵键盘扫描与中断信号生成<br>
+                        • 定时器模块（周期性中断）<br>
+                        • 蜂鸣器音乐播放器主体<br>
+                        • SNAKE 游戏逻辑 + VGA 驱动<br>
+                        • 手势识别信号接收模块
+                    </p>
+                </div>
+                <div class="sw-card">
+                    <h3>📝 软件端（Keil / C）</h3>
+                    <p>
+                        • 中断向量表配置与 ISR 编写<br>
+                        • DINO 游戏逻辑（跳跃、碰撞、计分）<br>
+                        • OLED 显示驱动与内容绘制<br>
+                        • 总线外设控制信号下发<br>
+                        • 蜂鸣器歌曲切换与播放控制<br>
+                        • 游戏难度递增算法
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 关键技术 ===== -->
+        <section class="section">
+            <h2 class="section-title"><span class="dot"></span>关键技术</h2>
+            <div class="card">
+                <div class="tags">
+                    <span class="tag">FPGA</span>
+                    <span class="tag">Cortex-M0</span>
+                    <span class="tag">ARM DesignStart</span>
+                    <span class="tag">AHBlite 总线</span>
+                    <span class="tag">SoC 集成</span>
+                    <span class="tag">Verilog</span>
+                    <span class="tag">Keil MDK</span>
+                    <span class="tag">OLED 驱动</span>
+                    <span class="tag">VGA 驱动</span>
+                    <span class="tag">中断控制</span>
+                    <span class="tag">像素合并优化</span>
+                    <span class="tag">软硬件协同</span>
+                    <span class="tag">Vivado</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 项目成果 ===== -->
+        <section class="section">
+            <h2 class="section-title"><span class="dot"></span>项目成果</h2>
+            <div class="highlight-box">
+                <div class="icon-lg">🏆</div>
+                <div class="content">
+                    <h3>系统完整性验证通过 — 校内先进团队</h3>
+                    <p>成功实现多传感应用场景下的完整 SoC 系统功能验证：OLED 与 VGA 双屏异显、矩阵键盘中断控制 DINO 游戏、VGA 贪吃蛇游戏流畅运行、蜂鸣器音乐播放。DINO 支持难度递增机制，SNAKE 通过像素合并优化在 640×480 分辨率下流畅刷新。项目获评校内先进团队。</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <a href="../../index.html" class="footer-back">← 返回主页</a>
+        <p>&copy; 2026 李世豪 &nbsp;·&nbsp; 托管于 <a href="https://github.com" target="_blank" rel="noopener">GitHub Pages</a> &nbsp;·&nbsp; leseho.xyz</p>
+    </footer>
+
+</body>
+</html>
