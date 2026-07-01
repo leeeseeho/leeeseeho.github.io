@@ -299,24 +299,21 @@
             color: var(--text);
         }
 
-        /* ===== Architecture Diagram Placeholder ===== */
-        .diagram-placeholder {
-            background: var(--card-bg);
+        /* ===== Project Image ===== */
+        .project-image {
+            width: 100%;
+            max-width: 100%;
             border-radius: var(--radius);
-            border: 2px dashed var(--border);
-            padding: 40px 24px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            margin-top: 16px;
+        }
+
+        .image-caption {
             text-align: center;
+            font-size: 0.85rem;
             color: var(--text-secondary);
-        }
-
-        .diagram-placeholder .icon {
-            font-size: 2.5rem;
-            margin-bottom: 12px;
-            opacity: 0.5;
-        }
-
-        .diagram-placeholder p {
-            font-size: 0.9rem;
+            margin-top: 8px;
         }
 
         /* ===== Tags ===== */
@@ -518,11 +515,8 @@
             </div>
 
             <!-- Architecture Diagram Placeholder -->
-            <div class="diagram-placeholder" style="margin-top: 16px;">
-                <div class="icon">📐</div>
-                <p><strong>系统架构图</strong></p>
-                <p style="font-size:0.82rem;margin-top:4px;">将架构图放入 <code>projects/tsmc65nm-cim/</code> 文件夹即可替换此处占位</p>
-            </div>
+            <img class="project-image" src="images/芯片封装图.png" alt="TSMC 65nm CIM 芯片 Wire Bonding 封装图">
+            <p class="image-caption">▲ TSMC 65nm CIM 芯片 — Wire Bonding 封装实物图</p>
         </section>
 
         <!-- ===== 我的工作 ===== -->
