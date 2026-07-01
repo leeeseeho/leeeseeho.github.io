@@ -1,9 +1,529 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-<meta http-equiv="refresh" content="0;url=InternalBeyond.html">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="李世豪 - 数字IC前端工程师个人简历。大连理工大学硕士，专注于数字IC设计、存内计算、RTL设计。">
+    <meta name="keywords" content="李世豪,数字IC,IC设计,数字前端,简历,大连理工大学,Verilog,RTL">
+    <title>李世豪 | 数字IC前端工程师</title>
+    <style>
+        /* ===== Reset & Base ===== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #f8f9fb;
+            --card-bg: #ffffff;
+            --text: #2d3436;
+            --text-secondary: #636e72;
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --border: #e5e7eb;
+            --tag-bg: #f1f5f9;
+            --tag-text: #475569;
+            --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.03);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+            --font-mono: "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", "Consolas", monospace;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ===== Header / Hero ===== */
+        .hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #1e3a5f 100%);
+            color: #ffffff;
+            padding: 60px 24px 48px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 60%, rgba(37, 99, 235, 0.12) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, rgba(56, 189, 248, 0.08) 0%, transparent 50%);
+            animation: heroGlow 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroGlow {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-2%) scale(1.02); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .hero-name {
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            margin-bottom: 8px;
+        }
+
+        .hero-title {
+            font-size: 1.15rem;
+            font-weight: 400;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+
+        .hero-university {
+            font-size: 0.95rem;
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+
+        .hero-contact {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+
+        .hero-contact span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hero-contact .icon {
+            width: 16px;
+            height: 16px;
+            opacity: 0.7;
+        }
+
+        /* ===== Container ===== */
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 32px 20px 64px;
+        }
+
+        /* ===== Section ===== */
+        .section {
+            margin-bottom: 28px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent-light);
+        }
+
+        .section-title .dot {
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ===== Cards ===== */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .card + .card {
+            margin-top: 16px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .card-subtitle {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+        }
+
+        .card-date {
+            font-size: 0.82rem;
+            color: var(--accent);
+            font-weight: 600;
+            white-space: nowrap;
+            background: var(--accent-light);
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        .card-body {
+            color: var(--text-secondary);
+            font-size: 0.93rem;
+            line-height: 1.75;
+        }
+
+        .card-body ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .card-body ul li {
+            position: relative;
+            padding-left: 18px;
+            margin-bottom: 6px;
+        }
+
+        .card-body ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0.6;
+        }
+
+        /* ===== Tags ===== */
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--tag-bg);
+            color: var(--tag-text);
+            font-size: 0.8rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+        }
+
+        /* ===== Skills Grid ===== */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .skill-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-sm);
+            padding: 18px 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: box-shadow 0.2s;
+        }
+
+        .skill-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .skill-card h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .skill-card p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.55;
+        }
+
+        /* ===== Achievement Badge ===== */
+        .achievement {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fef3c7;
+            color: #92400e;
+            font-size: 0.82rem;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .achievement::before {
+            content: '🏆';
+            font-size: 0.85rem;
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            text-align: center;
+            padding: 32px 20px;
+            color: var(--text-secondary);
+            font-size: 0.82rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 640px) {
+            .hero {
+                padding: 40px 16px 32px;
+            }
+            .hero-contact {
+                gap: 12px;
+                font-size: 0.82rem;
+            }
+            .container {
+                padding: 20px 12px 48px;
+            }
+            .card {
+                padding: 16px;
+            }
+            .card-header {
+                flex-direction: column;
+            }
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== Print Styles ===== */
+        @media print {
+            .hero {
+                background: #0f172a !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .card, .skill-card {
+                box-shadow: none;
+                break-inside: avoid;
+            }
+            body {
+                background: #fff;
+            }
+        }
+    </style>
 </head>
 <body>
-<script>window.location.href='InternalBeyond.html';</script>
+
+    <!-- ===== Hero / Header ===== -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1 class="hero-name">李&nbsp;&nbsp;世&nbsp;&nbsp;豪</h1>
+            <p class="hero-title">数字IC前端工程师</p>
+            <p class="hero-university">大连理工大学 · 电子科学与技术 · 硕士在读</p>
+            <div class="hero-contact">
+                <span>
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    2002年10月
+                </span>
+                <span>
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                    18741131874
+                </span>
+                <span>
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    3310746599@qq.com
+                </span>
+                <span>
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    辽宁省大连市
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- ===== 专业技能 ===== -->
+        <section class="section">
+            <h2 class="section-title"><span class="dot"></span>专业技能</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h3>数字前端设计 & 逻辑综合</h3>
+                    <p>熟练掌握 Verilog 语言与 RTL 电路设计，能够搭建完整的仿真验证环境；精通时序约束编写，熟练使用 Synopsys DC 结合静态时序分析（STA）进行逻辑综合与时序路径优化。</p>
+                </div>
+                <div class="skill-card">
+                    <h3>FPGA / SoC 软硬件协同</h3>
+                    <p>具备基于 Cortex-M0/M3 内核的 SoC 系统集成与软硬件调试经验；熟练使用 Vivado 进行 FPGA 原型验证；掌握 MATLAB、Keil 等工具进行系统建模与软硬件协同开发。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 教育背景 ===== -->
+        <section class="section">
+            <h2 class="section-title"><span class="dot"></span>教育背景</h2>
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">大连理工大学 · 电子科学与技术</div>
+                        <div class="card-subtitle">硕士（学术硕士）</div>
+                    </div>
+                    <span class="card-date">2024.09 – 2027.06</span>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">大连理工大学 · 集成电路设计与集成系统</div>
+                        <div class="card-subtitle">本科 &nbsp;|&nbsp; 排名：8 / 75</div>
+                    </div>
+                    <span class="card-date">2020.09 – 2024.06</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 实习经历 ===== -->
+        <section class="section">
+            <h2 class="section-title"><span class="dot"></span>实习经历</h2>
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">宸芯科技 — 数字前端工程师</div>
+                        <div class="card-subtitle">存内计算（CIM）芯片设计方向</div>
+                    </div>
+                    <span class="card-date">2026.06 – 至今</span>
+                </div>
+                <div class="card-body">
+                    <p>项目背景为基于 TSMC 65nm 工艺节点的低功耗存内计算（CIM）系统设计，核心存储阵列架构包括 6T SRAM、双端口 SRAM 及 4T eDRAM。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 项目经历 ===== -->
+        <section class="section">
+            <h2 class="section-title"><span class="dot"></span>项目经历</h2>
+
+            <!-- Project 1 -->
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">TSMC-65nm 低功耗存内计算芯片设计 — 核心成员</div>
+                        <div class="card-subtitle">存算一体架构 · RTL设计 · 综合与STA</div>
+                    </div>
+                    <span class="card-date">2024.06 – 至今</span>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>设计面向 CIM 架构的乘法优化算法，实现复杂核心计算单元的高性能逻辑 RTL 设计，并搭建 TestBench 进行功能验证</li>
+                        <li>完成逻辑综合与时序约束，使用 Synopsys DC 进行综合并结合 STA 进行全时序分析与关键路径优化，实现 CIM 模块与系统总线的接口适配及系统集成</li>
+                        <li>参与芯片流片、封装与板级测试，开发测试用例并完成系统硬件功能验证</li>
+                    </ul>
+                    <div class="tags">
+                        <span class="tag">Verilog RTL</span>
+                        <span class="tag">Synopsys DC</span>
+                        <span class="tag">STA</span>
+                        <span class="tag">TSMC 65nm</span>
+                        <span class="tag">CIM</span>
+                    </div>
+                    <div class="achievement">First Time Right — 芯片流片后经测试各项功能全部正常，在真实硬件平台上成功验证了向量矩阵运算指令，功能指标达到预期</div>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">12nm-FinFET PVT 监测芯片 — 核心测试成员</div>
+                        <div class="card-subtitle">先进工艺 · PVT监测 · 流片验证</div>
+                    </div>
+                    <span class="card-date">2025.04 – 2026.03</span>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>项目旨在设计基于 12nm FinFET 工艺节点的 PVT（工艺-电压-温度）监测传感器芯片</li>
+                        <li>负责前期传感器架构与原理方案评估，深入分析先进工艺节点下 PVT 漂移对电路的影响</li>
+                    </ul>
+                    <div class="tags">
+                        <span class="tag">12nm FinFET</span>
+                        <span class="tag">PVT 监测</span>
+                        <span class="tag">先进工艺</span>
+                    </div>
+                    <div class="achievement">成功完成 12nm 工艺节点下的功能验证，实现对多维度环境指标的精准量化</div>
+                </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">全国大学生集成电路创新大赛 — 项目负责人</div>
+                        <div class="card-subtitle">FPGA · Cortex-M0 SoC · OLED 显示</div>
+                    </div>
+                    <span class="card-date">2023.03 – 2023.07</span>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>基于 FPGA 与 Cortex-M0 内核构建 SoC 系统，完成底层硬件集成与上层应用开发</li>
+                        <li>独立完成传感器接口模块的 IP 设计与系统级调试，实现 OLED 显示屏与手势识别模块的精准数据交互</li>
+                    </ul>
+                    <div class="tags">
+                        <span class="tag">FPGA</span>
+                        <span class="tag">Cortex-M0</span>
+                        <span class="tag">SoC</span>
+                        <span class="tag">Vivado</span>
+                        <span class="tag">Keil</span>
+                    </div>
+                    <div class="achievement">成功实现多传感应用场景的系统功能，验证 SoC 系统完整性，获评校内先进团队</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 李世豪 &nbsp;·&nbsp; 托管于 <a href="https://github.com" target="_blank" rel="noopener">GitHub Pages</a> &nbsp;·&nbsp; leseho.xyz</p>
+    </footer>
+
 </body>
 </html>
