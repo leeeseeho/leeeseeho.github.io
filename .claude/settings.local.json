@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pdftotext \"d:/Github/leeeseeho.github.io/李世豪-大连理工大学-27-数字IC设计-数字前端工程师.pdf\" -)"
+    ]
+  }
+}

@@ -181,6 +181,33 @@
             color: var(--text);
         }
 
+        .card-title a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .card-title a:hover {
+            color: var(--accent);
+        }
+
+        .card-detail-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 12px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 600;
+            transition: gap 0.2s, color 0.2s;
+        }
+
+        .card-detail-link:hover {
+            gap: 8px;
+            color: #1d4ed8;
+        }
+
         .card-subtitle {
             font-size: 0.88rem;
             color: var(--text-secondary);
@@ -448,7 +475,7 @@
             <div class="card">
                 <div class="card-header">
                     <div>
-                        <div class="card-title">TSMC-65nm 低功耗存内计算芯片设计 — 核心成员</div>
+                        <div class="card-title"><a href="projects/tsmc65nm-cim/">TSMC-65nm 低功耗存内计算芯片设计</a> — 核心成员</div>
                         <div class="card-subtitle">存算一体架构 · RTL设计 · 综合与STA</div>
                     </div>
                     <span class="card-date">2024.06 – 至今</span>
@@ -467,6 +494,7 @@
                         <span class="tag">CIM</span>
                     </div>
                     <div class="achievement">First Time Right — 芯片流片后经测试各项功能全部正常，在真实硬件平台上成功验证了向量矩阵运算指令，功能指标达到预期</div>
+                    <a href="projects/tsmc65nm-cim/" class="card-detail-link">查看项目详情 →</a>
                 </div>
             </div>
 
