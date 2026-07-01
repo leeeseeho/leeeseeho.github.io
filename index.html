@@ -32,6 +32,10 @@
             --font-mono: "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", "Consolas", monospace;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: var(--font-sans);
             background: var(--bg);
@@ -72,6 +76,22 @@
             z-index: 1;
             max-width: 720px;
             margin: 0 auto;
+        }
+
+        .hero-avatar {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255,255,255,0.2);
+            box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.15), 0 8px 24px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .hero-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.25), 0 12px 32px rgba(0,0,0,0.4);
         }
 
         .hero-name {
@@ -386,6 +406,7 @@
     <!-- ===== Hero / Header ===== -->
     <header class="hero">
         <div class="hero-content">
+            <img class="hero-avatar" src="images/李世豪大头照.jpg" alt="李世豪" width="110" height="110">
             <h1 class="hero-name">李&nbsp;&nbsp;世&nbsp;&nbsp;豪</h1>
             <p class="hero-title">数字IC前端工程师</p>
             <p class="hero-university">大连理工大学 · 电子科学与技术 · 硕士在读</p>
