@@ -7,163 +7,271 @@
   <title>李世豪｜个人日程</title>
   <style>
     :root {
-      --ink: #172033; --muted: #687083; --line: #e9ebf0; --paper: #ffffff;
-      --ground: #f6f7fb; --blue: #3667e8; --blue-soft: #eaf0ff;
-      --violet: #8455d6; --violet-soft: #f1eaff; --green: #159a62;
-      --green-soft: #e5f7ef; --shadow: 0 12px 35px rgba(29, 43, 79, .08);
+      --ink:#182033; --muted:#71798a; --line:#e9ebf1; --paper:#fff; --ground:#f6f7fb;
+      --blue:#3769e9; --blue-soft:#eaf0ff; --violet:#8154d2; --violet-soft:#f2ebff;
+      --green:#16955f; --green-soft:#e5f7ee; --amber:#a56208; --amber-soft:#fff3dc;
+      --shadow:0 14px 38px rgba(27,39,74,.08);
     }
-    * { box-sizing: border-box; }
-    body { margin: 0; color: var(--ink); background: var(--ground); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; line-height: 1.5; }
-    .shell { max-width: 1120px; margin: 0 auto; padding: 34px 26px 64px; }
-    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 30px; }
-    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
-    .avatar { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 13px; color: #fff; font-weight: 800; background: linear-gradient(135deg, #386ae8, #774ed6); box-shadow: 0 5px 14px rgba(54, 103, 232, .25); }
-    .brand span { font-weight: 750; font-size: 1.05rem; }
-    .resume-link { border: 1px solid #dfe4f0; border-radius: 10px; padding: 9px 14px; color: var(--ink); text-decoration: none; font-size: .9rem; font-weight: 650; background: var(--paper); }
-    .resume-link:hover { border-color: var(--blue); color: var(--blue); }
-    .intro { display: flex; justify-content: space-between; align-items: end; gap: 22px; margin-bottom: 24px; }
-    h1 { margin: 0 0 7px; font-size: clamp(1.75rem, 4vw, 2.5rem); letter-spacing: -.035em; }
-    .intro p { margin: 0; color: var(--muted); }
-    .month { color: var(--blue); font-weight: 700; font-size: .94rem; }
-    .summary { display: flex; gap: 10px; flex-wrap: wrap; }
-    .metric { border: 1px solid #e5e8ef; border-radius: 11px; padding: 10px 13px; min-width: 104px; background: var(--paper); }
-    .metric b { display: block; font-size: 1.15rem; }
-    .metric small { color: var(--muted); font-size: .78rem; }
-    .panel { overflow: hidden; border: 1px solid #e5e8ef; border-radius: 18px; background: var(--paper); box-shadow: var(--shadow); }
-    .panel-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 21px 24px 16px; border-bottom: 1px solid var(--line); }
-    .panel-header h2 { margin: 0; font-size: 1.04rem; }
-    .hint { color: var(--muted); font-size: .82rem; }
-    .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; min-width: 760px; }
-    th, td { padding: 18px 24px; text-align: left; border-bottom: 1px solid var(--line); }
-    th { color: var(--muted); font-weight: 650; font-size: .78rem; letter-spacing: .04em; }
-    td { font-size: .94rem; vertical-align: middle; }
-    tbody tr:last-child td { border-bottom: 0; }
-    tbody tr { transition: background .18s; }
-    tbody tr:hover { background: #fbfcff; }
-    .date { min-width: 146px; font-weight: 750; }
-    .date small { display: block; margin-top: 3px; color: var(--muted); font-weight: 500; font-size: .78rem; }
-    .time { white-space: nowrap; }
-    .event { max-width: 390px; font-weight: 600; }
-    .priority { display: inline-flex; align-items: center; color: #a85b00; background: #fff4dd; border-radius: 999px; padding: 4px 10px; font-size: .8rem; font-weight: 700; }
-    .status { display: inline-flex; align-items: center; gap: 8px; color: #4d435f; cursor: pointer; user-select: none; white-space: nowrap; }
-    .status input { position: absolute; opacity: 0; }
-    .check { width: 18px; height: 18px; border-radius: 5px; border: 1px solid #d2bee8; background: linear-gradient(135deg, #fff, var(--violet-soft)); transition: .18s; }
-    .status input:checked + .check { border-color: var(--green); background: var(--green); box-shadow: inset 0 0 0 4px #fff; }
-    tr.done .event { color: var(--muted); text-decoration: line-through; }
-    tr.done .status { color: var(--green); }
-    .note { color: var(--muted); font-size: .86rem; }
-    .footer { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 18px; padding: 0 3px; color: var(--muted); font-size: .8rem; }
-    button { border: 0; padding: 0; background: none; color: var(--blue); cursor: pointer; font: inherit; }
-    button:hover { text-decoration: underline; }
-    @media (max-width: 640px) {
-      .shell { padding: 22px 15px 44px; }
-      .topbar, .intro, .footer { align-items: flex-start; flex-direction: column; }
-      .topbar { margin-bottom: 24px; }
-      .resume-link { width: 100%; text-align: center; }
-      .panel-header { align-items: flex-start; flex-direction: column; padding: 18px 18px 14px; }
-      th, td { padding: 16px 18px; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; background:var(--ground); color:var(--ink); font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
+    button, input, select, textarea { font:inherit; }
+    button { cursor:pointer; }
+    .app { display:grid; grid-template-columns:252px minmax(0,1fr); min-height:100vh; }
+    aside { position:sticky; top:0; height:100vh; display:flex; flex-direction:column; padding:28px 16px 20px; border-right:1px solid var(--line); background:#fff; }
+    .brand { display:flex; align-items:center; gap:11px; padding:0 10px 29px; font-weight:780; color:var(--ink); text-decoration:none; }
+    .avatar { display:grid; place-items:center; width:38px; height:38px; border-radius:12px; color:#fff; background:linear-gradient(135deg,#386be8,#7850d2); box-shadow:0 5px 13px rgba(55,105,233,.25); }
+    .nav-label { padding:0 10px 9px; color:#9aa0ad; font-size:.72rem; font-weight:750; letter-spacing:.09em; }
+    .nav { display:grid; gap:5px; }
+    .nav-item { display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%; border:0; border-radius:10px; padding:10px; color:#4d5668; text-align:left; background:transparent; }
+    .nav-item:hover { color:var(--blue); background:#f5f7fd; }
+    .nav-item.active { color:var(--blue); font-weight:740; background:var(--blue-soft); }
+    .nav-left { display:flex; align-items:center; gap:10px; }
+    .nav-icon { width:23px; text-align:center; font-size:1.06rem; }
+    .count { min-width:22px; padding:1px 7px; border-radius:999px; color:#778096; background:#f0f2f7; text-align:center; font-size:.75rem; font-weight:700; }
+    .nav-item.active .count { color:var(--blue); background:#dce7ff; }
+    .side-bottom { margin-top:auto; padding:16px 10px 0; color:var(--muted); border-top:1px solid var(--line); font-size:.79rem; }
+    .side-bottom a { display:block; margin-top:8px; color:var(--blue); text-decoration:none; font-weight:700; }
+    main { width:100%; max-width:1060px; padding:38px clamp(22px,5vw,62px) 60px; margin:0 auto; }
+    .mobile-brand { display:none; }
+    .heading { display:flex; align-items:flex-start; justify-content:space-between; gap:18px; margin-bottom:27px; }
+    .eyebrow { margin:0 0 6px; color:var(--blue); font-size:.83rem; font-weight:760; letter-spacing:.05em; }
+    h1 { margin:0; font-size:clamp(1.72rem,3.6vw,2.35rem); letter-spacing:-.04em; }
+    .heading p:last-child { margin:8px 0 0; color:var(--muted); }
+    .primary { border:0; border-radius:10px; padding:10px 14px; color:#fff; white-space:nowrap; background:var(--blue); box-shadow:0 6px 15px rgba(55,105,233,.24); font-weight:700; }
+    .primary:hover { background:#2458da; }
+    .overview-note { display:flex; align-items:center; gap:9px; margin-bottom:17px; padding:11px 13px; border:1px solid #dce7ff; border-radius:11px; color:#4f648f; background:#f8faff; font-size:.87rem; }
+    .overview-note strong { color:var(--blue); }
+    .filters { display:flex; gap:8px; margin-bottom:19px; }
+    .filter { border:1px solid #e1e5ee; border-radius:999px; padding:6px 12px; color:var(--muted); background:#fff; font-size:.82rem; }
+    .filter:hover { border-color:#afc3f8; color:var(--blue); }
+    .filter.active { border-color:var(--blue); color:var(--blue); background:var(--blue-soft); font-weight:740; }
+    .tasks { display:grid; gap:11px; }
+    .task { display:grid; grid-template-columns:22px minmax(0,1fr) auto; align-items:start; gap:13px; padding:16px 17px; border:1px solid #e6e9f0; border-radius:14px; background:var(--paper); box-shadow:0 2px 5px rgba(38,52,83,.02); transition:border .18s,box-shadow .18s; }
+    .task:hover { border-color:#cbd7f3; box-shadow:var(--shadow); }
+    .task.done { opacity:.66; }
+    .task.done .task-title { text-decoration:line-through; color:var(--muted); }
+    .task-toggle { appearance:none; width:20px; height:20px; margin:3px 0 0; border:1.5px solid #c6b1e7; border-radius:6px; background:linear-gradient(135deg,#fff,var(--violet-soft)); cursor:pointer; }
+    .task-toggle:checked { border-color:var(--green); background:var(--green); box-shadow:inset 0 0 0 4px #fff; }
+    .task-body { min-width:0; }
+    .task-title { margin:0; font-size:.98rem; font-weight:760; }
+    .task-meta { display:flex; flex-wrap:wrap; gap:7px 12px; margin-top:7px; color:var(--muted); font-size:.83rem; }
+    .task-note { margin-top:5px; color:var(--muted); font-size:.82rem; }
+    .tag { display:inline-flex; align-items:center; border-radius:999px; padding:3px 8px; font-size:.74rem; font-weight:720; }
+    .category { color:#5e51a0; background:var(--violet-soft); }
+    .priority-high { color:var(--amber); background:var(--amber-soft); }
+    .priority-normal { color:#4670ba; background:#eaf1ff; }
+    .priority-low { color:#577b69; background:var(--green-soft); }
+    .complete { color:var(--green); background:var(--green-soft); }
+    .task-actions { display:flex; gap:4px; }
+    .icon-button { width:28px; height:28px; border:0; border-radius:7px; color:#8a91a0; background:transparent; font-size:1rem; }
+    .icon-button:hover { color:#c54d5c; background:#fff0f1; }
+    .empty { padding:52px 24px; border:1px dashed #d8dde8; border-radius:14px; color:var(--muted); text-align:center; background:#fff; }
+    .empty strong { display:block; margin-bottom:5px; color:var(--ink); font-size:1rem; }
+    .footer { display:flex; justify-content:space-between; gap:12px; margin-top:24px; color:#89909e; font-size:.78rem; }
+    dialog { width:min(540px,calc(100% - 32px)); padding:0; border:0; border-radius:17px; box-shadow:0 24px 70px rgba(18,28,57,.24); }
+    dialog::backdrop { background:rgba(22,30,49,.35); }
+    .dialog-head { display:flex; align-items:center; justify-content:space-between; padding:20px 22px 15px; border-bottom:1px solid var(--line); }
+    .dialog-head h2 { margin:0; font-size:1.08rem; }
+    .close { border:0; border-radius:7px; width:30px; height:30px; color:var(--muted); background:#f3f5f8; font-size:1.2rem; }
+    form { padding:20px 22px 22px; }
+    .field-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    label { display:grid; gap:6px; color:#4c5566; font-size:.84rem; font-weight:700; }
+    .span-2 { grid-column:span 2; }
+    input,select,textarea { width:100%; border:1px solid #dfe3eb; border-radius:9px; padding:9px 10px; color:var(--ink); background:#fff; }
+    textarea { min-height:70px; resize:vertical; }
+    input:focus,select:focus,textarea:focus { outline:2px solid #cfe0ff; border-color:var(--blue); }
+    .form-actions { display:flex; justify-content:flex-end; gap:9px; margin-top:19px; }
+    .secondary { border:1px solid #dfe3eb; border-radius:9px; padding:9px 13px; color:#5b6475; background:#fff; font-weight:700; }
+    @media (max-width:760px) {
+      .app { display:block; }
+      aside { display:none; }
+      main { padding:18px 16px 42px; }
+      .mobile-brand { display:flex; align-items:center; justify-content:space-between; margin-bottom:23px; }
+      .mobile-brand .brand { padding:0; }
+      .mobile-nav { display:flex; overflow:auto; gap:7px; margin-bottom:24px; padding-bottom:3px; }
+      .mobile-nav .nav-item { width:auto; flex:0 0 auto; padding:8px 10px; border:1px solid #e3e6ee; background:#fff; }
+      .mobile-nav .nav-icon,.mobile-nav .count { display:none; }
+      .heading { flex-direction:column; margin-bottom:20px; }
+      .primary { width:100%; }
+      .task { grid-template-columns:20px minmax(0,1fr) 28px; gap:10px; padding:14px; }
+      .field-grid { grid-template-columns:1fr; }
+      .span-2 { grid-column:auto; }
+      .footer { flex-direction:column; }
     }
   </style>
 </head>
 <body>
-  <main class="shell">
-    <nav class="topbar" aria-label="主导航">
-      <a class="brand" href="./" aria-label="个人日程主页"><span class="avatar">李</span><span>李世豪 · 日程</span></a>
-      <a class="resume-link" href="resume/">查看个人简历 →</a>
-    </nav>
+  <div class="app">
+    <aside>
+      <a class="brand" href="./"><span class="avatar">李</span><span>李世豪 · 日程</span></a>
+      <div class="nav-label">安排分类</div>
+      <nav class="nav" id="desktop-nav" aria-label="日程分类"></nav>
+      <div class="side-bottom">所有事项仅储存在这台设备的浏览器。<a href="resume/">查看个人简历 →</a></div>
+    </aside>
 
-    <section class="intro" aria-labelledby="page-title">
-      <div>
-        <p class="month">2026 年 9 月</p>
-        <h1 id="page-title">本月计划</h1>
-        <p>专注眼前事项，按优先级逐项完成。</p>
-      </div>
-      <div class="summary" aria-label="日程统计">
-        <div class="metric"><b id="pending-count">3</b><small>待完成</small></div>
-        <div class="metric"><b id="done-count">0</b><small>已完成</small></div>
-      </div>
-    </section>
+    <main>
+      <div class="mobile-brand"><a class="brand" href="./"><span class="avatar">李</span><span>李世豪 · 日程</span></a><a href="resume/" style="color:var(--blue);font-size:.86rem;font-weight:700;text-decoration:none;">简历 →</a></div>
+      <nav class="mobile-nav" id="mobile-nav" aria-label="日程分类"></nav>
+      <section class="heading" id="heading"></section>
+      <div id="content"></div>
+      <footer class="footer"><span>完成事项会从“待办总览”移出，仍可在所属分类中查看。</span><span id="updated-at"></span></footer>
+    </main>
+  </div>
 
-    <section class="panel" aria-labelledby="schedule-title">
-      <div class="panel-header">
-        <h2 id="schedule-title">近期日程</h2>
-        <span class="hint">完成状态仅保存在当前浏览器</span>
+  <dialog id="task-dialog">
+    <div class="dialog-head"><h2>新建日程</h2><button class="close" type="button" id="close-dialog" aria-label="关闭">×</button></div>
+    <form id="task-form">
+      <div class="field-grid">
+        <label class="span-2">事项<input name="title" maxlength="80" required placeholder="例如：完成项目周报"></label>
+        <label>分类<select name="category"><option value="internship">实习日程</option><option value="recruiting" selected>秋招日程</option><option value="learning">学习工作</option></select></label>
+        <label>优先级<select name="priority"><option value="高">高</option><option value="普通" selected>普通</option><option value="低">低</option></select></label>
+        <label>日期<input name="date" type="date" required></label>
+        <label>时间<select name="time"><option>全天</option><option>上午</option><option>下午</option><option>晚上</option><option>09:00</option><option>10:00</option><option>14:00</option><option>16:00</option></select></label>
+        <label class="span-2">备注<textarea name="note" maxlength="160" placeholder="可选"></textarea></label>
       </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>日期</th><th>时间</th><th>事项</th><th>优先级</th><th>状态</th><th>备注</th></tr></thead>
-          <tbody id="schedule-body">
-            <tr data-id="nanoxin-review">
-              <td class="date">9月10日（周四）<small>2026</small></td>
-              <td class="time">晚上</td>
-              <td class="event">复习纳芯微之前的笔试题、面试题</td>
-              <td><span class="priority">高</span></td>
-              <td><label class="status"><input type="checkbox" aria-label="标记复习纳芯微之前的笔试题、面试题为完成"><span class="check"></span><span class="status-text">待完成</span></label></td>
-              <td class="note">为次日面试准备</td>
-            </tr>
-            <tr data-id="nanoxin-interview">
-              <td class="date">9月11日（周五）<small>2026</small></td>
-              <td class="time">晚上</td>
-              <td class="event">纳芯微面试</td>
-              <td><span class="priority">高</span></td>
-              <td><label class="status"><input type="checkbox" aria-label="标记纳芯微面试为完成"><span class="check"></span><span class="status-text">待完成</span></label></td>
-              <td class="note">具体时间暂未记录</td>
-            </tr>
-            <tr data-id="bfr-interview">
-              <td class="date">9月17日（周四）<small>2026</small></td>
-              <td class="time">16:00</td>
-              <td class="event">晶丰明源面试</td>
-              <td><span class="priority">高</span></td>
-              <td><label class="status"><input type="checkbox" aria-label="标记晶丰明源面试为完成"><span class="check"></span><span class="status-text">待完成</span></label></td>
-              <td class="note">—</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+      <div class="form-actions"><button type="button" class="secondary" id="cancel-dialog">取消</button><button class="primary" type="submit">添加事项</button></div>
+    </form>
+  </dialog>
 
-    <footer class="footer">
-      <span>日程数据不会上传到服务器。</span>
-      <button id="reset-status" type="button">重置完成状态</button>
-    </footer>
-  </main>
   <script>
     (function () {
-      var key = "leeeseeho-schedule-completed-v1";
-      var rows = Array.prototype.slice.call(document.querySelectorAll("#schedule-body tr"));
-      var saved = {};
-      try { saved = JSON.parse(localStorage.getItem(key) || "{}"); } catch (error) { saved = {}; }
+      var STORAGE_KEY = "leeeseeho-schedule-v2";
+      var LEGACY_KEY = "leeeseeho-schedule-completed-v1";
+      var categories = {
+        internship: { name: "实习日程", icon: "◈" },
+        recruiting: { name: "秋招日程", icon: "◉" },
+        learning: { name: "学习工作", icon: "◇" }
+      };
+      var defaults = [
+        { id: "nanoxin-review", category: "recruiting", date: "2026-09-10", time: "晚上", title: "复习纳芯微之前的笔试题、面试题", priority: "高", note: "为次日面试准备", completed: false },
+        { id: "nanoxin-interview", category: "recruiting", date: "2026-09-11", time: "晚上", title: "纳芯微面试", priority: "高", note: "具体时间暂未记录", completed: false },
+        { id: "bfr-interview", category: "recruiting", date: "2026-09-17", time: "16:00", title: "晶丰明源面试", priority: "高", note: "—", completed: false }
+      ];
+      var state = { view: "overview", filter: "all", tasks: loadTasks() };
+      var dialog = document.getElementById("task-dialog");
 
-      function updateRow(row, completed) {
-        var checkbox = row.querySelector("input");
-        var text = row.querySelector(".status-text");
-        checkbox.checked = completed;
-        row.classList.toggle("done", completed);
-        text.textContent = completed ? "已完成" : "待完成";
-      }
-      function updateCounts() {
-        var done = rows.filter(function (row) { return row.querySelector("input").checked; }).length;
-        document.getElementById("done-count").textContent = done;
-        document.getElementById("pending-count").textContent = rows.length - done;
-      }
-      rows.forEach(function (row) {
-        var id = row.getAttribute("data-id");
-        updateRow(row, saved[id] === true);
-        row.querySelector("input").addEventListener("change", function (event) {
-          saved[id] = event.target.checked;
-          try { localStorage.setItem(key, JSON.stringify(saved)); } catch (error) {}
-          updateRow(row, event.target.checked);
-          updateCounts();
+      function loadTasks() {
+        try {
+          var stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
+          if (Array.isArray(stored)) return stored;
+        } catch (error) {}
+        var old = {};
+        try { old = JSON.parse(localStorage.getItem(LEGACY_KEY) || "{}"); } catch (error) {}
+        return defaults.map(function (task) {
+          var copy = Object.assign({}, task);
+          copy.completed = old[copy.id] === true;
+          return copy;
         });
+      }
+      function saveTasks() {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state.tasks)); } catch (error) {}
+      }
+      function escapeHtml(value) {
+        return String(value || "").replace(/[&<>"']/g, function (char) {
+          return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[char];
+        });
+      }
+      function dateLabel(date) {
+        var d = new Date(date + "T12:00:00");
+        var weekdays = ["周日","周一","周二","周三","周四","周五","周六"];
+        return (d.getMonth() + 1) + "月" + d.getDate() + "日（" + weekdays[d.getDay()] + "）";
+      }
+      function orderValue(task) {
+        var slots = { "上午":"09:00", "下午":"14:00", "晚上":"19:00", "全天":"00:00" };
+        return task.date + " " + (slots[task.time] || task.time || "23:59");
+      }
+      function ordered(tasks) {
+        return tasks.slice().sort(function (a, b) { return orderValue(a).localeCompare(orderValue(b)); });
+      }
+      function priorityClass(priority) {
+        return priority === "高" ? "priority-high" : priority === "低" ? "priority-low" : "priority-normal";
+      }
+      function categoryCount(id) {
+        return state.tasks.filter(function (task) { return task.category === id && !task.completed; }).length;
+      }
+      function navMarkup() {
+        var items = [{ id:"overview", name:"待办总览", icon:"☰", count:state.tasks.filter(function(t){ return !t.completed; }).length }]
+          .concat(Object.keys(categories).map(function (id) {
+            return { id:id, name:categories[id].name, icon:categories[id].icon, count:categoryCount(id) };
+          }));
+        return items.map(function (item) {
+          return '<button class="nav-item ' + (state.view === item.id ? "active" : "") + '" type="button" data-view="' + item.id + '"><span class="nav-left"><span class="nav-icon">' + item.icon + '</span><span>' + item.name + '</span></span><span class="count">' + item.count + '</span></button>';
+        }).join("");
+      }
+      function taskMarkup(task, showCategory) {
+        var status = task.completed ? '<span class="tag complete">已完成</span>' : "";
+        var category = showCategory ? '<span class="tag category">' + categories[task.category].name + '</span>' : "";
+        var note = task.note && task.note !== "—" ? '<div class="task-note">' + escapeHtml(task.note) + '</div>' : "";
+        return '<article class="task ' + (task.completed ? "done" : "") + '">' +
+          '<input class="task-toggle" data-toggle="' + task.id + '" type="checkbox" ' + (task.completed ? "checked" : "") + ' aria-label="切换完成状态">' +
+          '<div class="task-body"><h2 class="task-title">' + escapeHtml(task.title) + '</h2>' +
+          '<div class="task-meta"><span>' + dateLabel(task.date) + ' · ' + escapeHtml(task.time) + '</span>' + category +
+          '<span class="tag ' + priorityClass(task.priority) + '">' + escapeHtml(task.priority) + '</span>' + status + '</div>' + note + '</div>' +
+          '<div class="task-actions"><button class="icon-button" type="button" data-delete="' + task.id + '" aria-label="删除事项">×</button></div></article>';
+      }
+      function render() {
+        document.getElementById("desktop-nav").innerHTML = navMarkup();
+        document.getElementById("mobile-nav").innerHTML = navMarkup();
+        var heading = document.getElementById("heading");
+        var content = document.getElementById("content");
+        if (state.view === "overview") {
+          var pending = ordered(state.tasks.filter(function (task) { return !task.completed; }));
+          heading.innerHTML = '<div><p class="eyebrow">待办总览</p><h1>按顺序完成今天的事</h1><p>这里只显示未完成安排；完成后将保留在对应分类的历史记录中。</p></div><button class="primary" type="button" data-add>＋ 新建事项</button>';
+          content.innerHTML = '<div class="overview-note"><strong>' + pending.length + ' 项待完成</strong><span>· 已完成事项不会占用主界面位置</span></div>' +
+            (pending.length ? '<section class="tasks">' + pending.map(function(task){ return taskMarkup(task, true); }).join("") + '</section>' : '<div class="empty"><strong>当前没有待办事项</strong>可以从右上角添加新的安排。</div>');
+        } else {
+          var category = categories[state.view];
+          var categoryTasks = ordered(state.tasks.filter(function (task) { return task.category === state.view; }));
+          var visible = state.filter === "all" ? categoryTasks : categoryTasks.filter(function (task) { return state.filter === "done" ? task.completed : !task.completed; });
+          heading.innerHTML = '<div><p class="eyebrow">' + category.name + '</p><h1>' + category.name + '</h1><p>在这里查看未完成与已完成的全部安排。</p></div><button class="primary" type="button" data-add>＋ 新建事项</button>';
+          content.innerHTML = '<div class="filters"><button class="filter ' + (state.filter === "all" ? "active" : "") + '" data-filter="all">全部 ' + categoryTasks.length + '</button><button class="filter ' + (state.filter === "pending" ? "active" : "") + '" data-filter="pending">未完成 ' + categoryTasks.filter(function(t){return !t.completed;}).length + '</button><button class="filter ' + (state.filter === "done" ? "active" : "") + '" data-filter="done">已完成 ' + categoryTasks.filter(function(t){return t.completed;}).length + '</button></div>' +
+            (visible.length ? '<section class="tasks">' + visible.map(function(task){ return taskMarkup(task, false); }).join("") + '</section>' : '<div class="empty"><strong>这里还没有安排</strong>添加一项计划，或切换筛选查看其他记录。</div>');
+        }
+        document.getElementById("updated-at").textContent = "共 " + state.tasks.length + " 项安排";
+      }
+      function openDialog() {
+        var form = document.getElementById("task-form");
+        form.reset();
+        form.elements.category.value = state.view === "overview" ? "recruiting" : state.view;
+        form.elements.date.value = new Date().toISOString().slice(0, 10);
+        dialog.showModal();
+      }
+      document.addEventListener("click", function (event) {
+        var nav = event.target.closest("[data-view]");
+        if (nav) { state.view = nav.getAttribute("data-view"); state.filter = "all"; render(); return; }
+        var filter = event.target.closest("[data-filter]");
+        if (filter) { state.filter = filter.getAttribute("data-filter"); render(); return; }
+        if (event.target.closest("[data-add]")) { openDialog(); return; }
+        var toggle = event.target.closest("[data-toggle]");
+        if (toggle) {
+          var id = toggle.getAttribute("data-toggle");
+          state.tasks = state.tasks.map(function(task) { return task.id === id ? Object.assign({}, task, { completed: toggle.checked }) : task; });
+          saveTasks(); render(); return;
+        }
+        var remove = event.target.closest("[data-delete]");
+        if (remove) {
+          var taskId = remove.getAttribute("data-delete");
+          if (window.confirm("确定删除这项安排吗？")) { state.tasks = state.tasks.filter(function(task){ return task.id !== taskId; }); saveTasks(); render(); }
+        }
       });
-      document.getElementById("reset-status").addEventListener("click", function () {
-        saved = {};
-        try { localStorage.removeItem(key); } catch (error) {}
-        rows.forEach(function (row) { updateRow(row, false); });
-        updateCounts();
+      document.getElementById("close-dialog").addEventListener("click", function(){ dialog.close(); });
+      document.getElementById("cancel-dialog").addEventListener("click", function(){ dialog.close(); });
+      document.getElementById("task-form").addEventListener("submit", function(event) {
+        event.preventDefault();
+        var data = new FormData(event.currentTarget);
+        state.tasks.push({
+          id: "task-" + Date.now(),
+          category: data.get("category"),
+          date: data.get("date"),
+          time: data.get("time"),
+          title: data.get("title").trim(),
+          priority: data.get("priority"),
+          note: data.get("note").trim(),
+          completed: false
+        });
+        saveTasks(); dialog.close(); state.view = data.get("category"); state.filter = "all"; render();
       });
-      updateCounts();
+      render();
     }());
   </script>
 </body>
