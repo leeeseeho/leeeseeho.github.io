@@ -22,6 +22,11 @@
     .avatar { display:grid; place-items:center; width:38px; height:38px; border-radius:12px; color:#fff; background:linear-gradient(135deg,#386be8,#7850d2); box-shadow:0 5px 13px rgba(55,105,233,.25); }
     .nav-label { padding:0 10px 9px; color:#9aa0ad; font-size:.72rem; font-weight:750; letter-spacing:.09em; }
     .nav { display:grid; gap:5px; }
+    .nav-group { display:grid; gap:2px; }
+    .nav-subnav { display:grid; gap:2px; margin:0 0 5px 32px; }
+    .nav-subitem { display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%; border:0; border-radius:8px; padding:7px 9px; color:#768096; text-align:left; background:transparent; font-size:.82rem; }
+    .nav-subitem:hover { color:var(--blue); background:#f5f7fd; }
+    .nav-subitem.active { color:var(--blue); font-weight:720; background:var(--blue-soft); }
     .nav-item { display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%; border:0; border-radius:10px; padding:10px; color:#4d5668; text-align:left; background:transparent; }
     .nav-item:hover { color:var(--blue); background:#f5f7fd; }
     .nav-item.active { color:var(--blue); font-weight:740; background:var(--blue-soft); }
@@ -90,6 +95,8 @@
       .mobile-brand .brand { padding:0; }
       .mobile-nav { display:flex; overflow:auto; gap:7px; margin-bottom:24px; padding-bottom:3px; }
       .mobile-nav .nav-item { width:auto; flex:0 0 auto; padding:8px 10px; border:1px solid #e3e6ee; background:#fff; }
+      .mobile-nav .nav-group, .mobile-nav .nav-subnav { display:flex; gap:7px; margin:0; }
+      .mobile-nav .nav-subitem { width:auto; flex:0 0 auto; padding:8px 10px; border:1px solid #e3e6ee; background:#fff; white-space:nowrap; }
       .mobile-nav .nav-icon,.mobile-nav .count { display:none; }
       .heading { flex-direction:column; margin-bottom:20px; }
       .primary { width:100%; }
@@ -190,13 +197,25 @@
         return state.tasks.filter(function (task) { return task.category === id && !task.completed; }).length;
       }
       function navMarkup() {
-        var items = [{ id:"overview", name:"待办总览", icon:"☰", count:state.tasks.filter(function(t){ return !t.completed; }).length }]
-          .concat(Object.keys(categories).map(function (id) {
-            return { id:id, name:categories[id].name, icon:categories[id].icon, count:categoryCount(id) };
-          }));
-        return items.map(function (item) {
-          return '<button class="nav-item ' + (state.view === item.id ? "active" : "") + '" type="button" data-view="' + item.id + '"><span class="nav-left"><span class="nav-icon">' + item.icon + '</span><span>' + item.name + '</span></span><span class="count">' + item.count + '</span></button>';
-        }).join("");
+        var overviewCount = state.tasks.filter(function (task) { return !task.completed; }).length;
+        var overviewActive = state.view === "overview";
+        var markup = '<button class="nav-item ' + (overviewActive ? "active" : "") + '" type="button" data-view="overview" data-filter="all"><span class="nav-left"><span class="nav-icon">☰</span><span>待办总览</span></span><span class="count">' + overviewCount + '</span></button>';
+        Object.keys(categories).forEach(function (id) {
+          var category = categories[id];
+          var allTasks = state.tasks.filter(function (task) { return task.category === id; });
+          var pending = allTasks.filter(function (task) { return !task.completed; }).length;
+          var done = allTasks.length - pending;
+          var allActive = state.view === id && state.filter === "all";
+          var pendingActive = state.view === id && state.filter === "pending";
+          var doneActive = state.view === id && state.filter === "done";
+          markup += '<div class="nav-group">' +
+            '<button class="nav-item ' + (allActive ? "active" : "") + '" type="button" data-view="' + id + '" data-filter="all"><span class="nav-left"><span class="nav-icon">' + category.icon + '</span><span>' + category.name + '</span></span><span class="count">' + allTasks.length + '</span></button>' +
+            '<div class="nav-subnav">' +
+              '<button class="nav-subitem ' + (pendingActive ? "active" : "") + '" type="button" data-view="' + id + '" data-filter="pending"><span>未完成</span><span class="count">' + pending + '</span></button>' +
+              '<button class="nav-subitem ' + (doneActive ? "active" : "") + '" type="button" data-view="' + id + '" data-filter="done"><span>已完成</span><span class="count">' + done + '</span></button>' +
+            '</div></div>';
+        });
+        return markup;
       }
       function taskMarkup(task, showCategory) {
         var status = task.completed ? '<span class="tag complete">已完成</span>' : "";
@@ -217,15 +236,13 @@
         if (state.view === "overview") {
           var pending = ordered(state.tasks.filter(function (task) { return !task.completed; }));
           heading.innerHTML = '<div><p class="eyebrow">待办总览</p><h1>按顺序完成今天的事</h1><p>这里只显示未完成安排；完成后将保留在对应分类的历史记录中。</p></div><button class="primary" type="button" data-add>＋ 新建事项</button>';
-          content.innerHTML = '<div class="overview-note"><strong>' + pending.length + ' 项待完成</strong><span>· 已完成事项不会占用主界面位置</span></div>' +
-            (pending.length ? '<section class="tasks">' + pending.map(function(task){ return taskMarkup(task, true); }).join("") + '</section>' : '<div class="empty"><strong>当前没有待办事项</strong>可以从右上角添加新的安排。</div>');
+          content.innerHTML = (pending.length ? '<section class="tasks">' + pending.map(function(task){ return taskMarkup(task, true); }).join("") + '</section>' : '<div class="empty"><strong>当前没有待办事项</strong>可以从右上角添加新的安排。</div>');
         } else {
           var category = categories[state.view];
           var categoryTasks = ordered(state.tasks.filter(function (task) { return task.category === state.view; }));
           var visible = state.filter === "all" ? categoryTasks : categoryTasks.filter(function (task) { return state.filter === "done" ? task.completed : !task.completed; });
           heading.innerHTML = '<div><p class="eyebrow">' + category.name + '</p><h1>' + category.name + '</h1><p>在这里查看未完成与已完成的全部安排。</p></div><button class="primary" type="button" data-add>＋ 新建事项</button>';
-          content.innerHTML = '<div class="filters"><button class="filter ' + (state.filter === "all" ? "active" : "") + '" data-filter="all">全部 ' + categoryTasks.length + '</button><button class="filter ' + (state.filter === "pending" ? "active" : "") + '" data-filter="pending">未完成 ' + categoryTasks.filter(function(t){return !t.completed;}).length + '</button><button class="filter ' + (state.filter === "done" ? "active" : "") + '" data-filter="done">已完成 ' + categoryTasks.filter(function(t){return t.completed;}).length + '</button></div>' +
-            (visible.length ? '<section class="tasks">' + visible.map(function(task){ return taskMarkup(task, false); }).join("") + '</section>' : '<div class="empty"><strong>这里还没有安排</strong>添加一项计划，或切换筛选查看其他记录。</div>');
+          content.innerHTML = (visible.length ? '<section class="tasks">' + visible.map(function(task){ return taskMarkup(task, false); }).join("") + '</section>' : '<div class="empty"><strong>这里还没有安排</strong>添加一项计划，或切换筛选查看其他记录。</div>');
         }
         document.getElementById("updated-at").textContent = "共 " + state.tasks.length + " 项安排";
       }
@@ -238,7 +255,7 @@
       }
       document.addEventListener("click", function (event) {
         var nav = event.target.closest("[data-view]");
-        if (nav) { state.view = nav.getAttribute("data-view"); state.filter = "all"; render(); return; }
+        if (nav) { state.view = nav.getAttribute("data-view"); state.filter = nav.getAttribute("data-filter") || "all"; render(); return; }
         var filter = event.target.closest("[data-filter]");
         if (filter) { state.filter = filter.getAttribute("data-filter"); render(); return; }
         if (event.target.closest("[data-add]")) { openDialog(); return; }
