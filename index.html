@@ -23,6 +23,12 @@
     .nav-label { padding:0 10px 9px; color:#9aa0ad; font-size:.72rem; font-weight:750; letter-spacing:.09em; }
     .nav { display:grid; gap:5px; }
     .nav-group { display:grid; gap:2px; }
+    .nav-row { display:flex; align-items:center; gap:2px; }
+    .nav-row .nav-item { flex:1; }
+    .expand { flex:0 0 auto; width:31px; height:31px; border:0; border-radius:8px; color:#7e8798; background:transparent; font-size:1rem; line-height:1; }
+    .expand:hover { color:var(--blue); background:#eef3ff; }
+    .expand[aria-expanded="true"] { color:var(--blue); }
+    .nav-subnav.collapsed { display:none; }
     .nav-subnav { display:grid; gap:2px; margin:0 0 5px 32px; }
     .nav-subitem { display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%; border:0; border-radius:8px; padding:7px 9px; color:#768096; text-align:left; background:transparent; font-size:.82rem; }
     .nav-subitem:hover { color:var(--blue); background:#f5f7fd; }
@@ -97,6 +103,8 @@
       .mobile-nav { display:flex; overflow:auto; gap:7px; margin-bottom:24px; padding-bottom:3px; }
       .mobile-nav .nav-item { width:auto; flex:0 0 auto; padding:8px 10px; border:1px solid #e3e6ee; background:#fff; }
       .mobile-nav .nav-group, .mobile-nav .nav-subnav { display:flex; gap:7px; margin:0; }
+      .mobile-nav .nav-row { display:flex; gap:2px; }
+      .mobile-nav .expand { display:none; }
       .mobile-nav .nav-subitem { width:auto; flex:0 0 auto; padding:8px 10px; border:1px solid #e3e6ee; background:#fff; white-space:nowrap; }
       .mobile-nav .nav-icon,.mobile-nav .count { display:none; }
       .heading { flex-direction:column; margin-bottom:20px; }
@@ -155,7 +163,7 @@
         { id: "nanoxin-interview", category: "recruiting", date: "2026-09-11", time: "晚上", title: "纳芯微面试", priority: "高", note: "具体时间暂未记录", completed: false },
         { id: "bfr-interview", category: "recruiting", date: "2026-09-17", time: "16:00", title: "晶丰明源面试", priority: "高", note: "—", completed: false }
       ];
-      var state = { view: "overview", filter: "all", tasks: loadTasks() };
+      var state = { view: "overview", filter: "all", tasks: loadTasks(), expanded: { internship: false, recruiting: false, learning: false } };
       var dialog = document.getElementById("task-dialog");
 
       function loadTasks() {
@@ -209,9 +217,13 @@
           var allActive = state.view === id && state.filter === "all";
           var pendingActive = state.view === id && state.filter === "pending";
           var doneActive = state.view === id && state.filter === "done";
+          var expanded = state.expanded[id] === true;
           markup += '<div class="nav-group">' +
-            '<button class="nav-item ' + (allActive ? "active" : "") + '" type="button" data-view="' + id + '" data-filter="all"><span class="nav-left"><span class="nav-icon">' + category.icon + '</span><span>' + category.name + '</span></span><span class="count">' + allTasks.length + '</span></button>' +
-            '<div class="nav-subnav">' +
+            '<div class="nav-row">' +
+              '<button class="nav-item ' + (allActive ? "active" : "") + '" type="button" data-view="' + id + '" data-filter="all"><span class="nav-left"><span class="nav-icon">' + category.icon + '</span><span>' + category.name + '</span></span><span class="count">' + allTasks.length + '</span></button>' +
+              '<button class="expand" type="button" data-expand="' + id + '" aria-label="' + (expanded ? "收起" : "展开") + category.name + '" aria-expanded="' + expanded + '">' + (expanded ? "⌃" : "⌄") + '</button>' +
+            '</div>' +
+            '<div class="nav-subnav ' + (expanded ? "" : "collapsed") + '">' +
               '<button class="nav-subitem ' + (pendingActive ? "active" : "") + '" type="button" data-view="' + id + '" data-filter="pending"><span>未完成</span><span class="count">' + pending + '</span></button>' +
               '<button class="nav-subitem ' + (doneActive ? "active" : "") + '" type="button" data-view="' + id + '" data-filter="done"><span>已完成</span><span class="count">' + done + '</span></button>' +
             '</div></div>';
@@ -255,6 +267,13 @@
         dialog.showModal();
       }
       document.addEventListener("click", function (event) {
+        var expand = event.target.closest("[data-expand]");
+        if (expand) {
+          var categoryId = expand.getAttribute("data-expand");
+          state.expanded[categoryId] = !state.expanded[categoryId];
+          render();
+          return;
+        }
         var nav = event.target.closest("[data-view]");
         if (nav) { state.view = nav.getAttribute("data-view"); state.filter = nav.getAttribute("data-filter") || "all"; render(); return; }
         var filter = event.target.closest("[data-filter]");
