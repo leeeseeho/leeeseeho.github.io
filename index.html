@@ -25,9 +25,11 @@
     .nav-group { display:grid; gap:2px; }
     .nav-row { display:flex; align-items:center; gap:2px; }
     .nav-row .nav-item { flex:1; }
-    .expand { flex:0 0 auto; width:31px; height:31px; border:0; border-radius:8px; color:#7e8798; background:transparent; font-size:1rem; line-height:1; }
+    .expand { display:grid; flex:0 0 auto; place-items:center; width:25px; height:31px; border:0; border-radius:7px; color:#7e8798; background:transparent; }
     .expand:hover { color:var(--blue); background:#eef3ff; }
     .expand[aria-expanded="true"] { color:var(--blue); }
+    .chevron { display:inline-block; width:7px; height:7px; border:solid currentColor; border-width:0 1.5px 1.5px 0; transform:rotate(-45deg); transition:transform .16s ease; }
+    .expand[aria-expanded="true"] .chevron { transform:rotate(45deg); }
     .nav-subnav.collapsed { display:none; }
     .nav-subnav { display:grid; gap:2px; margin:0 0 5px 32px; }
     .nav-subitem { display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%; border:0; border-radius:8px; padding:7px 9px; color:#768096; text-align:left; background:transparent; font-size:.82rem; }
@@ -220,8 +222,8 @@
           var expanded = state.expanded[id] === true;
           markup += '<div class="nav-group">' +
             '<div class="nav-row">' +
+              '<button class="expand" type="button" data-expand="' + id + '" aria-label="' + (expanded ? "收起" : "展开") + category.name + '" aria-expanded="' + expanded + '"><span class="chevron"></span></button>' +
               '<button class="nav-item ' + (allActive ? "active" : "") + '" type="button" data-view="' + id + '" data-filter="all"><span class="nav-left"><span class="nav-icon">' + category.icon + '</span><span>' + category.name + '</span></span><span class="count">' + allTasks.length + '</span></button>' +
-              '<button class="expand" type="button" data-expand="' + id + '" aria-label="' + (expanded ? "收起" : "展开") + category.name + '" aria-expanded="' + expanded + '">' + (expanded ? "⌃" : "⌄") + '</button>' +
             '</div>' +
             '<div class="nav-subnav ' + (expanded ? "" : "collapsed") + '">' +
               '<button class="nav-subitem ' + (pendingActive ? "active" : "") + '" type="button" data-view="' + id + '" data-filter="pending"><span>未完成</span><span class="count">' + pending + '</span></button>' +
